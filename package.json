@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/connorbode/strongo/issues"
   },
-  "homepage": "https://github.com/connorbode/strongo"
+  "homepage": "https://github.com/connorbode/strongo",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "express": "^4.13.1",
+    "mocha": "^2.2.5",
+    "mongo-mock": "^1.2.8",
+    "nock": "^2.7.0"
+  }
 }
