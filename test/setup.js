@@ -1,25 +1,44 @@
 var colors = require('colors');
 var mongodb = require('mongodb');
-var Promise = require('es6-promise').Promise;
+var express = require('express');
+var supertest = require('supertest');
+var Strongo = require('../index.js');
 var MongoClient = mongodb.MongoClient;
 global.chai = require('chai');
 global.should = chai.should();
+global.Promise = require('es6-promise').Promise;
+global.format = require('string-template');
+
+global.helpers = {
+  rageQuit: function (err) {
+    console.log(err.red);
+    console.log('bye.');
+    console.log();
+    process.exit(0);
+  },
+
+  catch: function (err) {
+    var error = "CAUGHT EXCEPTION:\n" + err;
+    helpers.rageQuit(error);
+  }
+};
 
 if (!process.env.MONGO_URL) {
   var error = 'MONGO_URL environment variable must be defined to run tests';
-  console.log(error.red);
-  console.log('bye.');
-  console.log();
-  process.exit(0);
+  helpers.rageQuit(error);
 }
 
 var handleDbConnected = function (db) {
   global.db = db;
+  global.strongo = new Strongo(db);
+  global.app = express();
   return db.createCollection('test');
 };
 
 var handleCollectionCreated = function (collection) {
   global.collection = collection;
+  app.use('/test', strongo.collection('test'));
+  global.request = supertest(app);
   return Promise.resolve();
 };
 
@@ -29,9 +48,7 @@ beforeEach(function (done) {
     .then(handleDbConnected)
     .then(handleCollectionCreated)
     .then(done)
-    .catch(function (err) {
-      throw err;
-    });
+    .catch(helpers.catch);
 });
 
 var closeDb = function () {
@@ -43,7 +60,5 @@ afterEach(function (done) {
   db.dropDatabase()
     .then(closeDb)
     .then(done)
-    .catch(function (err) {
-      throw err;
-    });
+    .catch(helpers.catch);
 });

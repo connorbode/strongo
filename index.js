@@ -6,7 +6,7 @@ var Strongo = function (db) {
 
   this.collection = function (name) {
     var collection = db.collection(name);
-    return new StrongoRouter(collection);
+    return StrongoRouter(collection);
   };
 };
 
