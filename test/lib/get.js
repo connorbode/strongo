@@ -18,4 +18,11 @@ describe('get', function () {
       .then(handleInserted)
       .catch(helpers.catch);
   });
+
+  it('cant find a document', function (done) {
+    var url = '/test/507f191e810c19729de860ea';
+    request
+      .get(url)
+      .expect(404, done);
+  });
 });
