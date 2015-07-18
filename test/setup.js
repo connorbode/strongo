@@ -30,6 +30,10 @@ if (!process.env.MONGO_URL) {
 
 var handleDbConnected = function (db) {
   global.db = db;
+  return Promise.resolve();
+};
+
+var createCollection = function () {
   global.strongo = new Strongo(db);
   global.app = express();
   return db.createCollection('test');
@@ -42,10 +46,16 @@ var handleCollectionCreated = function (collection) {
   return Promise.resolve();
 };
 
-beforeEach(function (done) {
+before(function (done) {
   MongoClient
     .connect(process.env.MONGO_URL)
     .then(handleDbConnected)
+    .then(done)
+    .catch(helpers.catch);
+});
+
+beforeEach(function (done) {
+  createCollection()
     .then(handleCollectionCreated)
     .then(done)
     .catch(helpers.catch);
@@ -58,7 +68,14 @@ var closeDb = function () {
 
 afterEach(function (done) {
   db.dropDatabase()
-    .then(closeDb)
+    .then(function () {
+      done();
+    })
+    .catch(helpers.catch);
+});
+
+after(function (done) {
+  closeDb()
     .then(done)
     .catch(helpers.catch);
 });
