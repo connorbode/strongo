@@ -17,7 +17,9 @@
     "url": "https://github.com/connorbode/strongo/issues"
   },
   "homepage": "https://github.com/connorbode/strongo",
-  "dependencies": {},
+  "dependencies": {
+    "body-parser": "^1.13.2"
+  },
   "devDependencies": {
     "chai": "^3.0.0",
     "colors": "^1.1.2",
