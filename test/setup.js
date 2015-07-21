@@ -6,6 +6,7 @@ var Strongo = require('../index.js');
 var MongoClient = mongodb.MongoClient;
 global.chai = require('chai');
 global.should = chai.should();
+global.expect = chai.expect;
 global.Promise = require('es6-promise').Promise;
 global.format = require('string-template');
 
