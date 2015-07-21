@@ -1,6 +1,5 @@
 describe('delete', function () {
   it('deletes a document', function (done) {
-
     var insertedId;
 
     var onFound = function (result) {
@@ -29,5 +28,17 @@ describe('delete', function () {
       .insertOne({ num: 1 })
       .then(onInserted)
       .catch(helpers.catch);
+  });
+
+  it('returns 404 if the document id is not a valid object id', function (done) {
+    request
+      .delete('/test/1')
+      .expect(404, done);
+  });
+
+  it('returns 404 if the document is not found', function (done) {
+    request
+      .delete('/test/1')
+      .expect(404, done);
   });
 });
