@@ -38,7 +38,7 @@ describe('delete', function () {
 
   it('returns 404 if the document is not found', function (done) {
     request
-      .delete('/test/1')
+      .delete('/test/55adc0b65be4ca622339a6b5')
       .expect(404, done);
   });
 });
