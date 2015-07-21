@@ -25,4 +25,10 @@ describe('get', function () {
       .get(url)
       .expect(404, done);
   });
+
+  it('receives an invalid object id', function (done) {
+    request
+      .get('/test/1')
+      .expect(404, done);
+  });
 });
