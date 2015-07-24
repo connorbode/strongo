@@ -7,7 +7,7 @@ describe('query', function () {
     ];
 
     var queryDocs = function (results) {
-      var results = results.ops.map(function (op) {
+      results = results.ops.map(function (op) {
         op._id = op._id.toString();
         return op;
       });
@@ -33,7 +33,7 @@ describe('query', function () {
     ];
 
     var queryDocs = function (results) {
-      var results = results.ops.map(function (op) {
+      results = results.ops.map(function (op) {
         op._id = op._id.toString();
         return op;
       });
@@ -60,7 +60,7 @@ describe('query', function () {
     ];
 
     var queryDocs = function (results) {
-      var results = results.ops.map(function (op) {
+      results = results.ops.map(function (op) {
         op._id = op._id.toString();
         return op;
       });
@@ -70,6 +70,25 @@ describe('query', function () {
       request
         .get('/test?offset=1')
         .expect(results)
+        .expect(200, done);
+    };
+
+    collection
+      .insertMany(docs)
+      .then(queryDocs)
+      .catch(helpers.catch);
+  });
+
+  it('limits the fields returned', function (done) {
+    var docs = [
+      { num: 1, name: 'fake', favourite: 'coffee' }
+    ];
+
+    var queryDocs = function (results) {
+      var id = results.ops[0]._id.toString();
+      request
+        .get('/test?fields=name,favourite')
+        .expect([{ _id: id, name: 'fake', favourite: 'coffee' }])
         .expect(200, done);
     };
 
