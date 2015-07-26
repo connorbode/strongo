@@ -18,4 +18,11 @@ describe('update', function () {
       .then(handleInserted)
       .catch(helpers.catch);
   });
+
+  it('returns 404 if the document is not found', function (done) {
+    request
+      .put('/test/507f191e810c19729de860ea')
+      .send({})
+      .expect(404, done);
+  });
 });
