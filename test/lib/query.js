@@ -97,4 +97,31 @@ describe('query', function () {
       .then(queryDocs)
       .catch(helpers.catch);
   });
+
+  it('filters documents by a query', function (done) {
+    var docs = [
+      { cost: '10' },
+      { cost: '5' },
+      { cost: '4' }
+    ];
+
+    var queryDocs = function (results) {
+      results = results.ops.map(function (op) {
+        op._id = op._id.toString();
+        return op;
+      });
+
+      results.splice(1, 2);
+
+      request
+        .get('/test?query[cost]=10')
+        .expect(results)
+        .expect(200, done);
+    };
+
+    collection
+      .insertMany(docs)
+      .then(queryDocs)
+      .catch(helpers.catch);
+  });
 });
